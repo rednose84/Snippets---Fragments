@@ -1,0 +1,4 @@
+ TYPES:
+  BEGIN OF <name of type> ,
+    dataname TYPE | TYPE REF TO datatype,
+  END OF <name of type> .
