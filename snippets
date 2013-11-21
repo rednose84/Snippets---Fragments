@@ -1,0 +1,11 @@
+ Data:
+ tm TYPE REF TO if_os_transaction_manager,
+        t TYPE REF TO if_os_transaction.
+
+  tm = cl_os_system=>get_transaction_manager( ).
+  t = tm->create_transaction( ).
+  t->start( ).
+  
+  [.....] ADD CODE for TRANSAKTION HERE [.......]
+  
+  t->end( ). "OR t->undo( ).
