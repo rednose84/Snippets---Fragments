@@ -1,0 +1,209 @@
+method BUILD_SELECT_OPTIONS .
+
+    DATA:
+         lr_cmp_usage TYPE REF TO if_wd_component_usage,
+         lv_tmp_text type string,
+         lr_field TYPE REF TO data.
+
+  lr_cmp_usage = wd_this->wd_cpuse_select_options( ).
+  IF lr_cmp_usage->has_active_component( ) IS INITIAL.
+    lr_cmp_usage->create_component( ).
+  ENDIF.
+
+  wd_comp_controller->m_sel_opt = wd_this->wd_cpifc_select_options( ).
+  wd_comp_controller->m_helper  = wd_comp_controller->m_sel_opt->init_selection_screen( ).
+
+  wd_comp_controller->m_helper->set_global_options(
+    i_display_btn_cancel = abap_false
+    i_display_btn_check  = abap_false
+    i_display_btn_reset  = abap_true ).
+  lv_tmp_text = wd_assist->if_wd_component_assistance~get_text( '008' ). "Suchen & Filtern
+  wd_comp_controller->m_helper->add_block(
+   i_id         = `BL01`
+   i_block_type = if_wd_select_options=>mc_block_type_tray
+   i_title      = lv_tmp_text ).
+
+  lr_field = wd_comp_controller->m_helper->create_range_table( `ZGKI_TL_SMU_VN-NAME` ).
+  lv_tmp_text = wd_assist->if_wd_component_assistance~get_text( '012' ). "Name des Nachweises
+  wd_comp_controller->m_helper->add_selection_field(
+   i_id           = `NAME`
+   i_within_block = `BL01`
+   i_description = lv_tmp_text
+   i_value_help_id = 'ZGKI_SMU_SH_NAME_WD'
+   i_value_help_type = if_wd_value_help_handler=>co_prefix_searchhelp
+   it_result      = lr_field ).
+  FREE lr_field.
+
+  lr_field = wd_comp_controller->m_helper->create_range_table( `ZGKI_TL_SMU_VN-VERANTWORTUNG` ).
+  lv_tmp_text = wd_assist->if_wd_component_assistance~get_text( '009' ). "Verantwortung
+  wd_comp_controller->m_helper->add_selection_field(
+   i_id           = `VERANTWORTLICHKEIT`
+   i_within_block = `BL01`
+   i_description = lv_tmp_text
+   i_value_help_id = 'USER_COMP'
+   i_value_help_type = if_wd_value_help_handler=>co_prefix_searchhelp
+   it_result      = lr_field ).
+  FREE lr_field.
+
+  lr_field = wd_comp_controller->m_helper->create_range_table( `ZGKI_TL_SMU_VN-NUTZUNGVON` ).
+  lv_tmp_text = wd_assist->if_wd_component_assistance~get_text( '010' ). "Nutzung von
+  wd_comp_controller->m_helper->add_selection_field(
+   i_id           = `NUTZUNG_VON`
+   i_within_block = `BL01`
+   i_description = lv_tmp_text
+   it_result      = lr_field ).
+  FREE lr_field.
+
+  lr_field = wd_comp_controller->m_helper->create_range_table( `ZGKI_TL_SMU_VN-NUTZUNGBIS` ).
+  lv_tmp_text = wd_assist->if_wd_component_assistance~get_text( '011' ). "Nutzung bis
+  wd_comp_controller->m_helper->add_selection_field(
+   i_id           = `NUTZUNG_BIS`
+   i_within_block = `BL01`
+   i_description = lv_tmp_text
+   it_result      = lr_field ).
+  FREE lr_field.
+
+  lr_field = wd_comp_controller->m_helper->create_range_table( `ZGKI_TL_SMU_II-ZOS_ANWENDUNG` ).
+  lv_tmp_text = wd_assist->if_wd_component_assistance~get_text( '013' ). "z/OS - Anwendung
+  wd_comp_controller->m_helper->add_selection_field(
+   i_id           = `ZOS_ANWENDUNG`
+   i_within_block = `BL01`
+   i_value_help_type = if_wd_value_help_handler=>co_prefix_searchhelp
+   i_description = lv_tmp_text
+   i_value_help_id = 'ZGKI_SMU_SH_ZOS_WD'
+   it_result      = lr_field ).
+  FREE lr_field.
+
+  lr_field = wd_comp_controller->m_helper->create_range_table( `ZGKI_TL_SMU_UC-UC4` ).
+  lv_tmp_text = wd_assist->if_wd_component_assistance~get_text( '014' ). "UC4 - Quelle
+  wd_comp_controller->m_helper->add_selection_field(
+   i_id           = `UC4_QUELLE`
+   i_within_block = `BL01`
+   i_value_help_type = if_wd_value_help_handler=>co_prefix_searchhelp
+   i_description = lv_tmp_text
+   i_value_help_id = 'ZGKI_SMU_SH_UC4Q_WD'
+   it_result      = lr_field ).
+  FREE lr_field.
+
+  lr_field = wd_comp_controller->m_helper->create_range_table( `ZGKI_TL_SMU_UC-UC4` ).
+  lv_tmp_text = wd_assist->if_wd_component_assistance~get_text( '015' ). "UC4 - Ziel
+  wd_comp_controller->m_helper->add_selection_field(
+   i_id           = `UC4_ZIEL`
+   i_within_block = `BL01`
+   i_value_help_type = if_wd_value_help_handler=>co_prefix_searchhelp
+   i_description = lv_tmp_text
+   i_value_help_id = 'ZGKI_SMU_SH_UC4Z_WD'
+   it_result      = lr_field ).
+  FREE lr_field.
+
+  lr_field = wd_comp_controller->m_helper->create_range_table( `ZGKI_TL_SMU_KA-KASSE` ).
+  lv_tmp_text = wd_assist->if_wd_component_assistance~get_text( '016' ). "Kasse / Kunde
+  wd_comp_controller->m_helper->add_selection_field(
+   i_id           = `KUNDE`
+   i_within_block = `BL01`
+   i_value_help_type = if_wd_value_help_handler=>co_prefix_searchhelp
+   i_description = lv_tmp_text
+   i_value_help_id = 'ZGKI_SMU_SH_KASSE_WD'
+   it_result      = lr_field ).
+  FREE lr_field.
+
+  lr_field = wd_comp_controller->m_helper->create_range_table( `ZGKI_TL_SMU_BS-BESTAND` ).
+  lv_tmp_text = wd_assist->if_wd_component_assistance~get_text( '017' ). "Verbund / Bestand
+  wd_comp_controller->m_helper->add_selection_field(
+   i_id           = `VERBUND`
+   i_within_block = `BL01`
+   i_value_help_type = if_wd_value_help_handler=>co_prefix_searchhelp
+   i_description = lv_tmp_text
+   i_value_help_id = 'ZGKI_SMU_SH_VERBUND_WD'
+   it_result      = lr_field ).
+  FREE lr_field.
+
+  lr_field = wd_comp_controller->m_helper->create_range_table( `ZGKI_TL_SMU_ST-STATUS` ).
+  lv_tmp_text = wd_assist->if_wd_component_assistance~get_text( '018' ). "Status
+  wd_comp_controller->m_helper->add_selection_field(
+   i_id           = `STATUS`
+   i_within_block = `BL01`
+   i_value_help_type = if_wd_value_help_handler=>co_prefix_searchhelp
+   i_description = lv_tmp_text
+   i_value_help_id = 'ZGKI_SMU_SH_STATUS_WD'
+   it_result      = lr_field ).
+  FREE lr_field.
+
+  lr_field = wd_comp_controller->m_helper->create_range_table( `ZGKI_TL_SMU_SI-SAPSYSTEMID` ).
+  lv_tmp_text = wd_assist->if_wd_component_assistance~get_text( '019' ). "SAP - System
+  wd_comp_controller->m_helper->add_selection_field(
+   i_id           = `SAPSYSTEM`
+   i_within_block = `BL01`
+   i_value_help_type = if_wd_value_help_handler=>co_prefix_searchhelp
+   i_description = lv_tmp_text
+   i_value_help_id = 'ZGKI_SMU_SH_SAPSYSTEM_WD'
+   it_result      = lr_field ).
+  FREE lr_field.
+
+  lr_field = wd_comp_controller->m_helper->create_range_table( `ZGKI_TL_SMU_VN-AUFTRAGSNR` ).
+  lv_tmp_text = wd_assist->if_wd_component_assistance~get_text( '020' ). "Auftragsnummer
+  wd_comp_controller->m_helper->add_selection_field(
+   i_id           = `AUFTRAGSNR`
+   i_within_block = `BL01`
+   i_value_help_type = if_wd_value_help_handler=>co_prefix_searchhelp
+   i_description = lv_tmp_text
+   i_value_help_id = 'ZGKI_SMU_SH_AUFTRAGSNR_WD'
+   it_result      = lr_field ).
+  FREE lr_field.
+
+  lr_field = wd_comp_controller->m_helper->create_range_table( `ZGKI_TL_SMU_OI-SYSTEMID` ).
+  lv_tmp_text = wd_assist->if_wd_component_assistance~get_text( '021' ). "Oracle - Instanz
+  wd_comp_controller->m_helper->add_selection_field(
+   i_id           = `ORACLEINSTANZ`
+   i_within_block = `BL01`
+   i_value_help_type = if_wd_value_help_handler=>co_prefix_searchhelp
+   i_description = lv_tmp_text
+   i_value_help_id = 'ZGKI_SMU_SH_ORACLEINSTANZ_WD'
+   it_result      = lr_field ).
+  FREE lr_field.
+
+  lr_field = wd_comp_controller->m_helper->create_range_table( `ZGKI_TL_SMU_DB-DATENBANK` ).
+  lv_tmp_text = wd_assist->if_wd_component_assistance~get_text( '025' ). "Datenbank
+  wd_comp_controller->m_helper->add_selection_field(
+   i_id           = `DATENBANK`
+   i_within_block = `BL01`
+   i_value_help_type = if_wd_value_help_handler=>co_prefix_searchhelp
+   i_description = lv_tmp_text
+   i_value_help_id = 'ZGKI_SMU_SH_DB_WD'
+   it_result      = lr_field ).
+  FREE lr_field.
+
+   lr_field = wd_comp_controller->m_helper->create_range_table( `ZGKI_TL_SMU_VN-RSP` ).
+  lv_tmp_text = wd_assist->if_wd_component_assistance~get_text( '022' ). "Release / Service-Pack
+  wd_comp_controller->m_helper->add_selection_field(
+   i_id           = `RSP`
+   i_within_block = `BL01`
+   i_value_help_type = if_wd_value_help_handler=>co_prefix_searchhelp
+   i_description = lv_tmp_text
+   i_value_help_id = 'ZGKI_SMU_SH_RSP_WD'
+   it_result      = lr_field ).
+  FREE lr_field.
+
+  lr_field = wd_comp_controller->m_helper->create_range_table( `ZGKI_TL_SMU_OS-BETRIEBSSYSTEM` ).
+  lv_tmp_text = wd_assist->if_wd_component_assistance~get_text( '023' ). "Betriebssystem SAP
+  wd_comp_controller->m_helper->add_selection_field(
+   i_id           = `BETRIEBSYSTEM_SAP`
+   i_within_block = `BL01`
+   i_value_help_type = if_wd_value_help_handler=>co_prefix_searchhelp
+   i_description = lv_tmp_text
+   i_value_help_id = 'ZGKI_SMU_SH_OSSAP_WD'
+   it_result      = lr_field ).
+  FREE lr_field.
+
+  lr_field = wd_comp_controller->m_helper->create_range_table( `ZGKI_TL_SMU_OS-BETRIEBSSYSTEM` ).
+  lv_tmp_text = wd_assist->if_wd_component_assistance~get_text( '024' ). "Betriebssystem Oracle
+  wd_comp_controller->m_helper->add_selection_field(
+   i_id           = `BETRIEBSYSTEM_ORACLE`
+   i_within_block = `BL01`
+   i_value_help_type = if_wd_value_help_handler=>co_prefix_searchhelp
+   i_description = lv_tmp_text
+   i_value_help_id = 'ZGKI_SMU_SH_OSORACLE_WD'
+   it_result      = lr_field ).
+  FREE lr_field.
+
+endmethod.
