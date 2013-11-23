@@ -1,0 +1,74 @@
+ DATA: lt_sel_item TYPE if_wd_select_options=>tt_selection_screen_item,
+        lt_nachweise TYPE ZGKI_TT_SMU_NACHWEIS,
+        lv_is_kunde TYPE wdy_boolean,
+        lo_smu_helper type REF TO ZCL_SMU_HELPER.
+
+  FIELD-SYMBOLS:
+    <fs_sel_item>        LIKE LINE OF lt_sel_item,
+    <fs_name>   TYPE zgki_tt_range_char100,
+    <fs_verantwortlichkeit>   TYPE zgki_tt_range_xubname,
+    <fs_nutzung_von>   TYPE zgki_tt_range_dats,
+    <fs_nutzung_bis>   TYPE zgki_tt_range_dats,
+    <fs_zos_anwendung>   TYPE zgki_tt_range_char20,
+    <fs_uc4_quelle>   TYPE zgki_tt_range_char20,
+    <fs_uc4_ziel>   TYPE zgki_tt_range_char20,
+    <fs_kunde>   TYPE zgki_tt_range_char20,
+    <fs_verbund>   TYPE zgki_tt_range_char20,
+    <fs_status>   TYPE zgki_tt_range_char20,
+    <fs_sapsystem>   TYPE zgki_tt_range_char3,
+    <fs_auftragsnr>   TYPE zgki_tt_range_aufnr,
+    <fs_oracleinstanz>   TYPE zgki_tt_range_char6,
+    <fs_datenbank>   TYPE zgki_tt_range_char20,
+    <fs_rsp>   TYPE zgki_tt_range_char20,
+    <fs_ossap>   TYPE zgki_tt_range_char20,
+    <fs_osoracle>   TYPE zgki_tt_range_char20
+
+
+   .
+
+  "************************************************************
+  " Auslesen der Selektionsparameter
+  "************************************************************
+  wd_this->m_helper->get_selection_screen_items( IMPORTING et_selection_screen_items = lt_sel_item ).
+
+  "************************************************************
+  " Select-Options Table ( Range Table ) auslesen
+  "************************************************************
+  LOOP AT lt_sel_item ASSIGNING <fs_sel_item>.
+    CASE <fs_sel_item>-m_id.
+      WHEN `NAME`.
+        ASSIGN <fs_sel_item>-mt_range_table->* TO <fs_name>.
+      WHEN `VERANTWORTLICHKEIT`.
+        ASSIGN <fs_sel_item>-mt_range_table->* TO <fs_verantwortlichkeit>.
+      WHEN `NUTZUNG_VON`.
+        ASSIGN <fs_sel_item>-mt_range_table->* TO <fs_nutzung_von>.
+      WHEN `NUTZUNG_BIS`.
+        ASSIGN <fs_sel_item>-mt_range_table->* TO <fs_nutzung_bis>.
+      WHEN `ZOS_ANWENDUNG`.
+        ASSIGN <fs_sel_item>-mt_range_table->* TO <fs_zos_anwendung>.
+      WHEN `UC4_QUELLE`.
+        ASSIGN <fs_sel_item>-mt_range_table->* TO <fs_uc4_quelle>.
+      WHEN `UC4_ZIEL`.
+        ASSIGN <fs_sel_item>-mt_range_table->* TO <fs_uc4_ziel>.
+      WHEN `KUNDE`.
+        ASSIGN <fs_sel_item>-mt_range_table->* TO <fs_kunde>.
+      WHEN `VERBUND`.
+        ASSIGN <fs_sel_item>-mt_range_table->* TO <fs_verbund>.
+      WHEN `STATUS`.
+        ASSIGN <fs_sel_item>-mt_range_table->* TO <fs_status>.
+      WHEN `SAPSYSTEM`.
+        ASSIGN <fs_sel_item>-mt_range_table->* TO <fs_sapsystem>.
+      WHEN `AUFTRAGSNR`.
+        ASSIGN <fs_sel_item>-mt_range_table->* TO <fs_auftragsnr>.
+      WHEN `ORACLEINSTANZ`.
+        ASSIGN <fs_sel_item>-mt_range_table->* TO <fs_oracleinstanz>.
+      WHEN `DATENBANK`.
+        ASSIGN <fs_sel_item>-mt_range_table->* TO <fs_datenbank>.
+      WHEN `RSP`.
+        ASSIGN <fs_sel_item>-mt_range_table->* TO <fs_rsp>.
+      WHEN `BETRIEBSYSTEM_SAP`.
+        ASSIGN <fs_sel_item>-mt_range_table->* TO <fs_ossap>.
+      WHEN `BETRIEBSYSTEM_ORACLE`.
+        ASSIGN <fs_sel_item>-mt_range_table->* TO <fs_osoracle>.
+    ENDCASE.
+  ENDLOOP.
